@@ -21,11 +21,9 @@ variable "root_password" {
   description = "Root password for the Linode instance."
   type        = string
   sensitive   = true
-  default     = "Password@123!@#"
 }
 variable "linode_token" {
   description = "Linode API token. Set this in your environment as LINODE_TOKEN."
   type        = string
   sensitive   = true
-  default     = "8bbbb473a6674235caa6df10e040c10f846ca8ef7a8e3f121223bfcc156ff9c9"
 }
