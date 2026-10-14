@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+apt-get install -y nginx unzip ufw
+mkdir -p /var/www/html
+printf '%s' '${site_zip_base64}' | base64 --decode > /tmp/peach-site.zip
+unzip -oq /tmp/peach-site.zip -d /var/www/html
+chown -R www-data:www-data /var/www/html
+chmod -R u=rwX,g=rX,o=rX /var/www/html
+ufw allow OpenSSH
+ufw allow 80/tcp
+ufw allow 443/tcp
+ufw --force enable
+systemctl enable --now nginx

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#efe5d3">
+<title>桃屋 — おかえりなさい</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&text=桃屋ピーチショップ旬の白桃黄桃ようこそおかえりなさいログインアカウント&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--paper:#f3e4d2;--halo:#fff5e8;--red:#ad263b;--ink:#482d2b;--muted:#8b6e62;--line:rgba(115,65,51,.22);--leaf:#788c5a}
+html,body{width:100%;min-height:100%;background:var(--paper);color:var(--ink)}
+body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.hero{position:relative;min-height:100svh;overflow:hidden;background:radial-gradient(ellipse 42% 44% at 50% 46%,rgba(255,250,239,.98) 0%,rgba(255,245,229,.82) 45%,transparent 82%),radial-gradient(ellipse at 13% 18%,rgba(239,169,153,.24),transparent 33%),radial-gradient(ellipse at 88% 83%,rgba(202,130,104,.2),transparent 34%),linear-gradient(135deg,#f6e8d6 0%,#efdfcc 52%,#f8ebdc 100%);isolation:isolate}
+/* A quiet Japanese garden: layered paper arches, soft blossoms, and a fine ornamental border. */
+.hero::before{content:"";position:absolute;inset:clamp(12px,2vw,28px);z-index:0;pointer-events:none;border:1px solid rgba(161,91,75,.19);border-radius:48% 48% 3px 3px / 24% 24% 3px 3px;box-shadow:inset 0 0 0 8px rgba(255,250,239,.12),0 0 0 1px rgba(255,250,239,.26)}
+.hero::after{content:"✿     ·       ✿        ·       ✿";position:absolute;left:5%;right:5%;top:8%;z-index:0;pointer-events:none;text-align:center;white-space:pre-wrap;color:rgba(173,38,59,.18);font:clamp(14px,2vw,23px)/1.5 Georgia,serif;letter-spacing:clamp(12px,4vw,56px);text-shadow:0 130px 0 rgba(173,38,59,.10),0 260px 0 rgba(173,38,59,.09),0 390px 0 rgba(173,38,59,.08)}
+#peaches{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:manipulation;z-index:0}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.16;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");z-index:4}
+.col{position:absolute;top:clamp(18px,3.2vw,48px);bottom:clamp(18px,3.2vw,48px);z-index:2;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:space-between;font-family:"Shippori Mincho B1","Yu Mincho",serif;color:var(--red)}
+.col.l{left:clamp(18px,3.2vw,48px)}.col.r{right:clamp(18px,3.2vw,48px)}
+.col .top{display:flex;flex-direction:column;align-items:center;gap:2.2vh}.side-en{writing-mode:horizontal-tb;text-orientation:mixed;font:600 10px/1.4 system-ui,sans-serif;letter-spacing:.04em;max-width:90px;text-align:center;color:#8b6e62;text-shadow:0 0 12px var(--halo)}
+.v{writing-mode:vertical-rl;text-orientation:upright;text-shadow:0 0 18px var(--halo),0 0 36px var(--halo);line-height:1;font-weight:800;white-space:nowrap}
+.big{font-size:clamp(55px,8.5vh,118px);letter-spacing:.06em}
+.mid{font-size:clamp(26px,4.5vh,58px)}
+.sm{font-size:clamp(12px,1.6vh,17px);font-weight:600;letter-spacing:.4em}
+.hanko{width:clamp(38px,5vh,56px);aspect-ratio:1;border-radius:18%;background:var(--red);color:var(--paper);display:grid;place-items:center;font-weight:800;font-family:"Shippori Mincho B1",serif;font-size:clamp(26px,3.5vh,39px);box-shadow:inset 0 0 0 2px rgba(239,229,211,.35);transform:rotate(-3deg)}
+.auth-wrap{position:relative;z-index:3;min-height:100svh;display:grid;place-items:center;padding:34px 82px;pointer-events:none}
+.auth-card{position:relative;pointer-events:auto;width:min(100%,440px);padding:clamp(22px,3vw,32px);background:rgba(250,246,237,.91);border:1px solid rgba(184,19,46,.16);box-shadow:0 24px 80px rgba(91,53,39,.10),inset 0 0 0 5px rgba(255,255,255,.22);backdrop-filter:blur(9px);border-radius:4px;animation:rise .7s cubic-bezier(.2,.8,.2,1) both;box-shadow:0 25px 90px rgba(115,65,51,.12),0 4px 18px rgba(173,38,59,.04),inset 0 0 0 5px rgba(255,255,255,.24)}
+.peach-peeker{position:absolute;z-index:5;top:12px;width:76px;height:108px;pointer-events:none;transform-origin:50% 20%;filter:drop-shadow(0 8px 6px rgba(112,54,38,.12));transition:transform .65s cubic-bezier(.16,1.3,.3,1)}
+.peach-peeker.left{left:-55px;transform:rotate(-10deg)}.peach-peeker.right{right:-55px;transform:scaleX(-1) rotate(-10deg)}
+.peach-peeker .string{stroke:#788c5a;stroke-width:2;stroke-linecap:round;stroke-dasharray:3 4;fill:none}
+.peach-peeker .eyes-closed{opacity:0;transform:scaleY(0);transform-origin:center 48px;transition:transform .22s cubic-bezier(.3,1.6,.4,1),opacity .12s}
+.peach-peeker .eyes-open{opacity:1;transition:opacity .12s}
+.auth-card.watching-name .peach-peeker.left{transform:translate(22px,235px) rotate(8deg)}.auth-card.watching-name .peach-peeker.right{transform:scaleX(-1) translate(22px,235px) rotate(8deg)}
+.auth-card.password-focus .peach-peeker.left{transform:translate(8px,335px) rotate(-17deg)}.auth-card.password-focus .peach-peeker.right{transform:scaleX(-1) translate(8px,335px) rotate(-17deg)}
+.auth-card.password-focus .peach-peeker .eyes-open{opacity:0}.auth-card.password-focus .peach-peeker .eyes-closed{opacity:1;transform:scaleY(1)}
+.auth-card.password-focus .peach-peeker{animation:dramaticBlink .48s ease-out 1}
+.auth-card.watching-name .peach-peeker{animation:peekIn .7s cubic-bezier(.16,1.3,.3,1) both}
+@keyframes peekIn{0%{filter:drop-shadow(0 0 0 rgba(112,54,38,0));}55%{filter:drop-shadow(0 10px 7px rgba(112,54,38,.18));}100%{filter:drop-shadow(0 8px 6px rgba(112,54,38,.12));}}
+@keyframes dramaticBlink{0%{translate:0 0}35%{translate:0 7px}65%{translate:0 -2px}100%{translate:0 0}}
+.peach-mascot{display:block;width:154px;height:124px;margin:-12px auto 4px;overflow:visible;filter:drop-shadow(0 7px 5px rgba(112,54,38,.10));cursor:pointer;touch-action:manipulation}
+.peach-body{transform-origin:100px 76px;animation:peachBob 2.8s ease-in-out infinite}
+.peach-eye{transition:transform .14s ease-out}
+.peach-blush{transition:opacity .2s}
+.peach-leaf{transform-origin:100px 26px;transition:transform .35s cubic-bezier(.2,1.5,.4,1)}
+.peach-mascot.cover .peach-leaf{transform:rotate(-35deg) translate(-7px,8px) scale(1.18)}
+.peach-mascot.cover .peach-eye{opacity:0}
+.peach-mascot.peek .peach-leaf{transform:rotate(32deg) translate(12px,1px)}
+.peach-mascot.peek .peach-eye{transform:translateY(2px) scaleY(.55)}
+.peach-mascot.busy .peach-body{animation:peachWiggle .35s ease-in-out infinite alternate}
+.peach-mascot.success .peach-body{animation:peachHop .55s cubic-bezier(.2,1.7,.4,1) 2}
+.peach-mascot.error .peach-body{animation:peachNo .25s ease-in-out 3}
+.mascot-caption{text-align:center;color:var(--muted);font-size:11px;line-height:1.45;margin:-1px 0 8px}
+.en{display:block;font-size:.88em;font-weight:450;letter-spacing:0;color:#9a7d70;margin-top:2px}
+.jp-en{display:block}
+@keyframes peachBob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-4px) rotate(1deg)}}
+@keyframes peachWiggle{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}
+@keyframes peachHop{0%,100%{transform:translateY(0) scale(1)}45%{transform:translateY(-17px) scale(1.04,.96)}}
+@keyframes peachNo{0%,100%{transform:translateX(0) rotate(0)}35%{transform:translateX(-5px) rotate(-4deg)}70%{transform:translateX(5px) rotate(4deg)}}
+.eyebrow{font-family:"Shippori Mincho B1",serif;color:var(--red);letter-spacing:.22em;font-size:12px;text-align:center;margin-bottom:10px}
+h1{font-family:"Shippori Mincho B1","Yu Mincho",serif;text-align:center;font-size:clamp(25px,3.6vw,34px);font-weight:800;line-height:1.35;color:var(--red);letter-spacing:.04em}
+.subtitle{text-align:center;color:var(--muted);font-size:13px;margin:8px 0 16px;line-height:1.55}
+.mode-tabs{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line);margin-bottom:22px}
+.mode-tabs button{appearance:none;border:0;background:transparent;color:#96796c;padding:12px 6px;font:inherit;font-size:13px;cursor:pointer;position:relative}
+.mode-tabs button[aria-selected="true"]{color:var(--red);font-weight:700}
+.mode-tabs button[aria-selected="true"]::after{content:"";position:absolute;bottom:-1px;left:18%;right:18%;height:2px;background:var(--red)}
+.field{margin:0 0 12px}
+label{display:block;font-size:12px;font-weight:650;letter-spacing:.06em;margin:0 0 7px;color:#725147}
+.input-wrap{position:relative}
+input{width:100%;min-height:47px;border:1px solid rgba(115,65,51,.26);border-radius:2px;background:rgba(255,255,255,.66);padding:12px 13px;color:var(--ink);font:inherit;font-size:14px;outline:none;transition:border-color .18s,box-shadow .18s}
+input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(184,19,46,.09)}
+input::placeholder{color:#b4a095}
+.show-pass{position:absolute;right:9px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#906c60;font-size:11px;cursor:pointer;padding:8px}
+#password{padding-right:56px}
+.primary{width:100%;min-height:49px;border:0;border-radius:2px;background:var(--red);color:#fff8ec;font:inherit;font-weight:700;font-size:14px;letter-spacing:.12em;cursor:pointer;box-shadow:0 7px 15px rgba(184,19,46,.16);transition:transform .18s,box-shadow .18s,background .18s;margin-top:4px}
+.primary:hover{background:#9e1027;transform:translateY(-1px);box-shadow:0 10px 20px rgba(184,19,46,.2)}
+.primary:disabled{opacity:.65;cursor:wait;transform:none}
+.forgot-row{text-align:right;margin:1px 0 16px}
+.text-button{border:0;background:none;color:var(--red);font:inherit;font-size:12px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.message{display:none;margin:14px 0 0;padding:11px 12px;border-left:3px solid var(--red);background:rgba(184,19,46,.06);font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+.message.show{display:block}
+.message.success{border-left-color:#60784d;background:rgba(96,120,77,.08)}
+.foot{text-align:center;margin-top:14px;font-size:11px;letter-spacing:.04em;color:#9b8073;line-height:1.7}
+.foot span{color:var(--red)}
+.hint{text-align:center;margin-top:16px;color:#9b8073;font-size:11px}
+@keyframes rise{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:700px){.col{opacity:.78}.col.l{left:12px}.col.r{right:12px}.big{font-size:clamp(39px,10vw,58px)}.mid{font-size:clamp(20px,5.2vw,29px)}.sm{display:none}.auth-wrap{padding:28px 48px}.auth-card{padding:25px 21px}.col .top{gap:1vh}.side-en{font-size:9px;max-width:65px}}
+@media(max-width:420px){.peach-peeker{width:48px;height:74px;top:10px}.peach-peeker.left{left:-29px}.peach-peeker.right{right:-29px}.auth-card.watching-name .peach-peeker.left{transform:translate(9px,265px) rotate(8deg)}.auth-card.watching-name .peach-peeker.right{transform:scaleX(-1) translate(9px,265px) rotate(8deg)}.auth-card.password-focus .peach-peeker.left{transform:translate(5px,355px) rotate(-17deg)}.auth-card.password-focus .peach-peeker.right{transform:scaleX(-1) translate(5px,355px) rotate(-17deg)}.auth-wrap{padding:18px 30px}.auth-card{padding:20px 17px}.big{font-size:38px}.mid{font-size:20px}.subtitle{margin-bottom:14px}.peach-mascot{width:132px;height:106px;margin-top:-8px}.hint{margin-top:9px}.foot{margin-top:11px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="hero">
+  <canvas id="peaches" aria-label="Interactive peach garden. Hover or tap a peach to make it bounce." tabindex="0"></canvas>
+  <div class="col l" aria-hidden="true">
+    <div class="top"><h2 class="v big">桃屋</h2><p class="v sm">旬の白桃</p><p class="side-en">Seasonal white peaches</p></div>
+    <div class="hanko">桃</div>
+  </div>
+  <div class="col r" aria-hidden="true">
+    <div class="top"><p class="v mid">ピーチショップ</p><p class="side-en">Peach shop</p></div>
+    <p class="v sm">白桃・黄桃</p><p class="side-en">White &amp; yellow peaches</p>
+  </div>
+  <div class="auth-wrap">
+    <section class="auth-card" id="authCard" aria-labelledby="heading">
+      <svg class="peach-peeker left" viewBox="0 0 100 130" aria-hidden="true">
+        <path class="string" d="M43 0 C44 14 39 20 43 29"/><path class="string" d="M58 0 C60 12 54 19 57 27"/>
+        <path d="M49 25 C32 8 16 21 16 43 C7 69 24 91 46 92 C51 92 54 88 55 86 C58 90 64 92 70 89 C91 82 95 58 85 39 C76 19 60 14 49 25Z" fill="#ef9a8c" stroke="#b95c4e" stroke-width="1.8"/>
+        <path d="M51 28 C45 42 46 67 55 86 C61 68 61 43 51 28Z" fill="#ffd0b8" opacity=".78"/>
+        <path d="M49 26 C39 9 50 1 63 5 C62 17 57 23 49 26Z" fill="#718854" stroke="#526d3d" stroke-width="1.5"/>
+        <path d="M49 26 C64 7 78 15 80 23 C68 29 57 29 49 26Z" fill="#9aaa70" stroke="#526d3d" stroke-width="1.5"/>
+        <g class="eyes-open"><ellipse cx="36" cy="53" rx="4.2" ry="6" fill="#482d2b"/><circle cx="37.5" cy="51" r="1.6" fill="#fff7e9"/><ellipse cx="66" cy="53" rx="4.2" ry="6" fill="#482d2b"/><circle cx="67.5" cy="51" r="1.6" fill="#fff7e9"/></g>
+        <g class="eyes-closed" fill="none" stroke="#482d2b" stroke-width="2.8" stroke-linecap="round"><path d="M29 54 Q36 61 43 54"/><path d="M59 54 Q66 61 73 54"/></g>
+        <ellipse cx="27" cy="64" rx="6" ry="3" fill="#d94e5c" opacity=".48"/><ellipse cx="75" cy="64" rx="6" ry="3" fill="#d94e5c" opacity=".48"/><path d="M45 66 Q51 72 57 66" fill="none" stroke="#8d3e3d" stroke-width="2" stroke-linecap="round"/>
+        <path d="M25 82 Q17 91 26 95 M76 81 Q84 91 75 95" fill="none" stroke="#b95c4e" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <svg class="peach-peeker right" viewBox="0 0 100 130" aria-hidden="true">
+        <path class="string" d="M43 0 C44 14 39 20 43 29"/><path class="string" d="M58 0 C60 12 54 19 57 27"/>
+        <path d="M49 25 C32 8 16 21 16 43 C7 69 24 91 46 92 C51 92 54 88 55 86 C58 90 64 92 70 89 C91 82 95 58 85 39 C76 19 60 14 49 25Z" fill="#f4bd88" stroke="#bd8057" stroke-width="1.8"/>
+        <path d="M51 28 C45 42 46 67 55 86 C61 68 61 43 51 28Z" fill="#ffe3ba" opacity=".82"/>
+        <path d="M49 26 C39 9 50 1 63 5 C62 17 57 23 49 26Z" fill="#718854" stroke="#526d3d" stroke-width="1.5"/>
+        <path d="M49 26 C64 7 78 15 80 23 C68 29 57 29 49 26Z" fill="#9aaa70" stroke="#526d3d" stroke-width="1.5"/>
+        <g class="eyes-open"><ellipse cx="36" cy="53" rx="4.2" ry="6" fill="#482d2b"/><circle cx="37.5" cy="51" r="1.6" fill="#fff7e9"/><ellipse cx="66" cy="53" rx="4.2" ry="6" fill="#482d2b"/><circle cx="67.5" cy="51" r="1.6" fill="#fff7e9"/></g>
+        <g class="eyes-closed" fill="none" stroke="#482d2b" stroke-width="2.8" stroke-linecap="round"><path d="M29 54 Q36 61 43 54"/><path d="M59 54 Q66 61 73 54"/></g>
+        <ellipse cx="27" cy="64" rx="6" ry="3" fill="#d94e5c" opacity=".48"/><ellipse cx="75" cy="64" rx="6" ry="3" fill="#d94e5c" opacity=".48"/><path d="M45 66 Q51 72 57 66" fill="none" stroke="#8d3e3d" stroke-width="2" stroke-linecap="round"/>
+        <path d="M25 82 Q17 91 26 95 M76 81 Q84 91 75 95" fill="none" stroke="#bd8057" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <p class="eyebrow">MOMOYA · PEACH SHOP</p>
+      <svg class="peach-mascot" id="peachMascot" viewBox="0 0 200 150" role="img" aria-label="A friendly animated peach. Its eyes follow you and it hides them while you enter your password." tabindex="0">
+        <g class="peach-body">
+          <ellipse cx="100" cy="133" rx="47" ry="7" fill="#9a6248" opacity=".12"/>
+          <path d="M100 40 C76 16 51 31 43 54 C29 91 55 126 87 128 C95 129 99 124 100 121 C103 126 111 130 121 127 C151 119 171 86 155 54 C144 30 121 18 100 40Z" fill="#e98273" stroke="#b95c4e" stroke-width="2"/>
+          <path d="M100 42 C86 57 86 91 100 121 C105 101 111 67 100 42Z" fill="#f7b09a" opacity=".82"/>
+          <ellipse cx="70" cy="60" rx="19" ry="20" fill="#f7a38f" opacity=".7"/>
+          <ellipse cx="131" cy="60" rx="19" ry="20" fill="#f7a38f" opacity=".7"/>
+          <path class="peach-leaf" d="M100 42 C89 23 98 11 115 8 C115 24 111 35 100 42Z" fill="#6c8c4e" stroke="#4c6c3b" stroke-width="2"/>
+          <path class="peach-leaf" d="M100 42 C119 19 137 27 139 37 C125 43 112 44 100 42Z" fill="#91a966" stroke="#4c6c3b" stroke-width="2"/>
+          <path d="M101 38 Q119 30 133 34" fill="none" stroke="#d6e0b3" stroke-width="2" stroke-linecap="round"/>
+          <g class="peach-eye" id="peachEyeL"><ellipse cx="77" cy="77" rx="6.5" ry="9" fill="#4c3029"/><circle cx="79" cy="73" r="2.4" fill="#fff8e8"/></g>
+          <g class="peach-eye" id="peachEyeR"><ellipse cx="123" cy="77" rx="6.5" ry="9" fill="#4c3029"/><circle cx="125" cy="73" r="2.4" fill="#fff8e8"/></g>
+          <ellipse class="peach-blush" cx="62" cy="89" rx="10" ry="5" fill="#d94e5c" opacity=".43"/>
+          <ellipse class="peach-blush" cx="138" cy="89" rx="10" ry="5" fill="#d94e5c" opacity=".43"/>
+          <path d="M94 92 Q100 100 106 92" fill="none" stroke="#8d3e3d" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M56 107 Q45 115 51 120 M144 107 Q155 115 149 120" fill="none" stroke="#d47769" stroke-width="3" stroke-linecap="round"/>
+          <path d="M60 114 Q53 124 64 127 L76 125 M140 114 Q147 124 136 127 L124 125" fill="#f7b09a" stroke="#b95c4e" stroke-width="1.5"/>
+          <path d="M46 75 Q35 68 38 59 M154 75 Q165 68 162 59" fill="none" stroke="#b95c4e" stroke-width="2" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <p class="mascot-caption" id="mascotCaption">Hi! I'm Momo 🍑 <span class="en">Your tiny login buddy — watch my eyes!</span></p>
+      <h1 id="heading"><span class="jp-en">おかえりなさい<span class="en">Welcome back</span></span></h1>
+      <p class="subtitle" id="subtitle">桃屋へようこそ。ログインして続けましょう。<span class="en">Welcome to Momoya. Log in to continue.</span></p>
+      <div class="mode-tabs" role="tablist" aria-label="Authentication mode / 認証方法">
+        <button type="button" role="tab" id="loginTab" aria-selected="true">ログイン <span class="en">Log in</span></button>
+        <button type="button" role="tab" id="signupTab" aria-selected="false">新規アカウント <span class="en">Create account</span></button>
+      </div>
+      <form id="authForm">
+        <div class="field">
+          <label for="email">メールアドレス <span class="en">Email address</span></label>
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+        </div>
+        <div class="field" id="passwordField">
+          <label for="password">パスワード <span class="en">Password</span></label>
+          <div class="input-wrap">
+            <input id="password" name="password" type="password" autocomplete="current-password" minlength="6" placeholder="6文字以上 / At least 6 characters" required>
+            <button class="show-pass" id="showPass" type="button" aria-label="Show password">表示 / Show</button>
+          </div>
+        </div>
+        <div class="forgot-row" id="forgotRow"><button class="text-button" id="forgot" type="button">パスワードをお忘れですか？ <span class="en">Forgot password?</span></button></div>
+        <button class="primary" id="submitButton" type="submit">ログインする　→ <span class="en" style="color:#fff8ec">Log in</span></button>
+        <p class="message" id="message" role="status" aria-live="polite"></p>
+      </form>
+      <p class="hint">✿ 桃をクリックしてね <span class="en">Tap Momo to make them bounce</span> ✿</p>
+      <p class="foot">季節の桃と、あなたのための小さな場所。<span class="en">Seasonal peaches and a little place just for you.</span><br><span>桃屋</span> · MOMOYA</p>
+    </section>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(() => {
+  // Frontend-safe credentials only. Never put a Supabase secret/service-role key in browser code.
+  const SUPABASE_URL = 'https://afmsmwxgsozeumwrtizy.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_MhIkypUfFOXtVln_v7HGyA_qv8shQo9';
+  const REDIRECT_AFTER_LOGIN = new URL('index.html', window.location.href).href;
+  const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+  const form = document.getElementById('authForm');
+  const email = document.getElementById('email');
+  const password = document.getElementById('password');
+  const heading = document.getElementById('heading');
+  const subtitle = document.getElementById('subtitle');
+  const submitButton = document.getElementById('submitButton');
+  const message = document.getElementById('message');
+  const loginTab = document.getElementById('loginTab');
+  const signupTab = document.getElementById('signupTab');
+  const forgotRow = document.getElementById('forgotRow');
+  const forgot = document.getElementById('forgot');
+  const passwordField = document.getElementById('passwordField');
+  const showPass = document.getElementById('showPass');
+  const mascot = document.getElementById('peachMascot');
+  const authCard = document.getElementById('authCard');
+  const mascotCaption = document.getElementById('mascotCaption');
+  const eyeL = document.getElementById('peachEyeL');
+  const eyeR = document.getElementById('peachEyeR');
+  let mode = 'login';
+  function mascotMood(mood, caption) {
+    mascot.classList.remove('cover','peek','busy','success','error');
+    if (mood) mascot.classList.add(mood);
+    if (caption) mascotCaption.innerHTML = caption;
+  }
+  function lookAt(x, y) {
+    const r = mascot.getBoundingClientRect();
+    const dx = x - (r.left + r.width/2), dy = y - (r.top + r.height*.54);
+    const len = Math.hypot(dx,dy) || 1, scale = Math.min(1,len/150);
+    const tx = dx/len*4.2*scale, ty = dy/len*3.4*scale;
+    eyeL.style.transform = `translate(${tx}px,${ty}px)`;
+    eyeR.style.transform = `translate(${tx}px,${ty}px)`;
+  }
+  window.addEventListener('pointermove', e => {
+    if (document.activeElement !== password || password.type !== 'password') lookAt(e.clientX,e.clientY);
+  }, {passive:true});
+  email.addEventListener('focus', () => {
+    authCard.classList.add('watching-name');
+    authCard.classList.remove('password-focus');
+    mascotMood('', 'Finding your email… <span class="en">Momo is looking for your address.</span>');
+    const r = email.getBoundingClientRect(); lookAt(r.left+r.width*.8,r.top+r.height/2);
+  });
+  email.addEventListener('input', () => {
+    authCard.classList.add('watching-name');
+    const r = email.getBoundingClientRect(); lookAt(r.left+Math.min(email.value.length,24)*7,r.top+r.height/2);
+    if (email.value.includes('@')) mascotMood('', 'Looking good! <span class="en">That email has an @ — nice.</span>');
+  });
+  password.addEventListener('focus', () => {
+    authCard.classList.remove('watching-name');
+    authCard.classList.add('password-focus');
+    if (password.type === 'password') mascotMood('cover','Shh, secret password! 🙈 <span class="en">Momo politely covers their eyes.</span>');
+    else mascotMood('peek','Momo is trying not to peek! <span class="en">Oops, too curious.</span>');
+  });
+  password.addEventListener('blur', () => { authCard.classList.remove('password-focus'); mascotMood('', 'Ready when you are 🍑 <span class="en">Momo is cheering you on.</span>'); });
+  mascot.addEventListener('click', () => {
+    mascotMood('success','Pyon! 🍑 <span class="en">Boing! Momo says you’ve got this.</span>');
+    setTimeout(() => mascotMood('', 'Hi! I\'m Momo 🍑 <span class="en">Your tiny login buddy — watch my eyes!</span>'), 1300);
+  });
+  mascot.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); mascot.click(); } });
+
+  function tell(text, kind = 'error') {
+    message.textContent = text;
+    message.className = 'message show' + (kind === 'success' ? ' success' : '');
+  }
+  function clearMessage() { message.textContent = ''; message.className = 'message'; }
+  function setMode(nextMode) {
+    mode = nextMode;
+    const signingUp = mode === 'signup';
+    loginTab.setAttribute('aria-selected', String(!signingUp));
+    signupTab.setAttribute('aria-selected', String(signingUp));
+    heading.innerHTML = signingUp ? '桃屋へようこそ<span class="en">Welcome to Momoya</span>' : 'おかえりなさい<span class="en">Welcome back</span>';
+    subtitle.innerHTML = signingUp ? 'アカウントを作成して、桃屋の世界へ。<span class="en">Create an account and step into Momoya.</span>' : '桃屋へようこそ。ログインして続けましょう。<span class="en">Welcome to Momoya. Log in to continue.</span>';
+    submitButton.innerHTML = signingUp ? 'アカウントを作成　→ <span class="en" style="color:#fff8ec">Create account</span>' : 'ログインする　→ <span class="en" style="color:#fff8ec">Log in</span>';
+    password.autocomplete = signingUp ? 'new-password' : 'current-password';
+    forgotRow.style.display = signingUp ? 'none' : '';
+    clearMessage();
+  }
+  loginTab.addEventListener('click', () => setMode('login'));
+  signupTab.addEventListener('click', () => setMode('signup'));
+  showPass.addEventListener('click', () => {
+    const reveal = password.type === 'password';
+    password.type = reveal ? 'text' : 'password';
+    showPass.textContent = reveal ? '隠す / Hide' : '表示 / Show';
+    mascotMood(reveal ? 'peek' : 'cover', reveal ? 'Momo is peeking! 👀 <span class="en">Your password is visible.</span>' : 'Secret mode on 🙈 <span class="en">Momo covers their eyes again.</span>');
+    showPass.setAttribute('aria-label', reveal ? 'Hide password' : 'Show password');
+  });
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    clearMessage();
+    const emailValue = email.value.trim();
+    const passwordValue = password.value;
+    if (!emailValue || !passwordValue) return tell('メールアドレスとパスワードを入力してください。 / Enter your email and password.');
+    submitButton.disabled = true;
+    submitButton.innerHTML = mode === 'signup' ? '作成しています… <span class="en" style="color:#fff8ec">Creating account…</span>' : 'ログイン中… <span class="en" style="color:#fff8ec">Logging in…</span>';
+    authCard.classList.remove('watching-name');
+    authCard.classList.add('password-focus');
+    mascotMood('busy', 'Checking your peach passport… 🍑 <span class="en">Momo is checking your details.</span>');
+    try {
+      if (mode === 'signup') {
+        const { data, error } = await client.auth.signUp({
+          email: emailValue,
+          password: passwordValue,
+          options: { emailRedirectTo: REDIRECT_AFTER_LOGIN }
+        });
+        if (error) throw error;
+        if (data.session) {
+          tell('アカウントを作成しました。桃屋へ移動します… / Account created. Opening Momoya…', 'success');
+          mascotMood('success', 'Welcome to Momoya! 🎉 <span class="en">Momo is celebrating.</span>');
+          window.location.assign(REDIRECT_AFTER_LOGIN);
+        } else {
+          tell('確認メールを送信しました。メール内のリンクを開いてからログインしてください。 / Confirmation email sent. Open its link, then log in.', 'success');
+          mascotMood('success', 'Check your inbox! 💌 <span class="en">Momo sent your email on its way.</span>');
+        }
+      } else {
+        const { error } = await client.auth.signInWithPassword({ email: emailValue, password: passwordValue });
+        if (error) throw error;
+        tell('ログインしました。桃屋へ移動します… / Logged in! Opening Momoya…', 'success');
+        mascotMood('success', 'Yay, you’re in! 🍑 <span class="en">Momo is doing a happy hop.</span>');
+        window.location.assign(REDIRECT_AFTER_LOGIN);
+      }
+    } catch (error) {
+      tell(friendlyError(error) + ' / Please check your details and try again.');
+      mascotMood('error', 'Hmm, let’s try again. <span class="en">Momo is rooting for you!</span>');
+    } finally {
+      submitButton.disabled = false;
+      submitButton.innerHTML = mode === 'signup' ? 'アカウントを作成　→ <span class="en" style="color:#fff8ec">Create account</span>' : 'ログインする　→ <span class="en" style="color:#fff8ec">Log in</span>';
+    }
+  });
+
+  forgot.addEventListener('click', async () => {
+    clearMessage();
+    const emailValue = email.value.trim();
+    if (!emailValue) {
+      tell('先にメールアドレスを入力してください。 / Enter your email address first.');
+      email.focus();
+      return;
+    }
+    forgot.disabled = true;
+    try {
+      const { error } = await client.auth.resetPasswordForEmail(emailValue, {
+        redirectTo: new URL('reset-password.html', window.location.href).href
+      });
+      if (error) throw error;
+      tell('パスワード再設定用のメールを送信しました。受信箱をご確認ください。 / Password reset email sent. Check your inbox.', 'success');
+    } catch (error) {
+      tell(friendlyError(error) + ' / Please check your details and try again.');
+      mascotMood('error', 'Hmm, let’s try again. <span class="en">Momo is rooting for you!</span>');
+    } finally {
+      forgot.disabled = false;
+    }
+  });
+
+  function friendlyError(error) {
+    const msg = String(error?.message || '');
+    if (/invalid login credentials/i.test(msg)) return 'メールアドレスまたはパスワードが正しくありません。 / Incorrect email or password.';
+    if (/email not confirmed/i.test(msg)) return 'メールアドレスの確認が必要です。受信箱をご確認ください。 / Please confirm your email.';
+    if (/user already registered/i.test(msg)) return 'このメールアドレスは登録済みです。ログインしてください。 / This email is already registered. Try logging in.';
+    if (/password should be at least/i.test(msg)) return 'パスワードは6文字以上で入力してください。 / Use at least 6 characters.';
+    if (/rate limit/i.test(msg)) return '試行回数が多すぎます。少し待ってから再度お試しください。 / Too many attempts. Please wait and retry.';
+    return (msg ? msg + ' / ' : '') + '認証に失敗しました。設定と入力内容をご確認ください。 / Authentication failed. Check the setup and your details.';
+  }
+
+  // If an existing session is present, skip the login screen.
+  client.auth.getSession().then(({ data }) => {
+    if (data.session) window.location.replace(REDIRECT_AFTER_LOGIN);
+  });
+  client.auth.onAuthStateChange((event) => {
+    if (event === 'SIGNED_IN') window.location.replace(REDIRECT_AFTER_LOGIN);
+  });
+})();
+
+// Lightweight interactive peach garden: move/tap/click peaches to make them bounce.
+(() => {
+  const canvas = document.getElementById('peaches');
+  const ctx = canvas.getContext('2d');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w = 0, h = 0, dpr = 1, last = 0, raf = 0;
+  let fruit = [];
+  const colors = [['#f5a09a','#d9364f'],['#f8c49e','#e56d55'],['#f9d9a4','#e8a65d'],['#f6b1a6','#b8132e']];
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    w = rect.width; h = rect.height; dpr = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = Math.round(w*dpr); canvas.height = Math.round(h*dpr);
+    fruit = [];
+    const count = Math.max(16, Math.min(48, Math.floor(w*h/25000)));
+    for (let i=0;i<count;i++) {
+      const size = 9 + Math.random()*17;
+      fruit.push({x:Math.random()*w,y:Math.random()*h,baseY:Math.random()*h,size,phase:Math.random()*6.28,
+        vx:(Math.random()-.5)*.12,vy:0,bounce:0,colors:colors[Math.floor(Math.random()*colors.length)]});
+    }
+    draw();
+  }
+  function drawPeach(p) {
+    ctx.save();
+    ctx.translate(p.x, p.y - p.bounce);
+    ctx.rotate(Math.sin(p.phase)*.07);
+    ctx.scale(1+p.bounce*.001, 1-p.bounce*.001);
+    const r=p.size;
+    ctx.globalAlpha=.24;
+    ctx.fillStyle='#875c47';
+    ctx.beginPath();ctx.ellipse(2,r*.8,r*.85,r*.32,0,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=.92;
+    const g=ctx.createRadialGradient(-r*.25,-r*.35,1,r*.05,r*.1,r*1.25);
+    g.addColorStop(0,'#fff0ce');g.addColorStop(.25,p.colors[0]);g.addColorStop(1,p.colors[1]);
+    ctx.fillStyle=g;
+    ctx.beginPath();ctx.moveTo(0,-r*.7);
+    ctx.bezierCurveTo(-r*.15,-r*1.15,-r*.9,-r*.8,-r,-r*.12);
+    ctx.bezierCurveTo(-r*1.13,r*.63,-r*.45,r,0,r*.92);
+    ctx.bezierCurveTo(r*.48,r,r*1.12,r*.52,r,-r*.12);
+    ctx.bezierCurveTo(r*.88,-r*.76,r*.17,-r*1.13,0,-r*.7);ctx.fill();
+    ctx.strokeStyle='rgba(126,64,48,.4)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(0,-r*.66);ctx.quadraticCurveTo(r*.12,0,0,r*.78);ctx.stroke();
+    ctx.fillStyle='#66834e';ctx.beginPath();ctx.ellipse(r*.2,-r*.92,r*.2,r*.42,.6,0,Math.PI*2);ctx.fill();
+    ctx.restore();
+  }
+  function draw(now=0) {
+    raf=0; ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
+    const dt=last?Math.min((now-last)/16.67,2):1;last=now;
+    for(const p of fruit) {
+      p.phase += .002*dt;
+      if(!reduceMotion){ p.x += p.vx*dt; if(p.x < -30) p.x=w+30; if(p.x>w+30) p.x=-30; p.y += Math.sin(p.phase*.7)*.035*dt; }
+      if(p.bounce>0) p.bounce=Math.max(0,p.bounce-(reduceMotion?5:1.4)*dt);
+      if(!reduceMotion && p.bounce>0) p.y += Math.sin(p.bounce*.13)*.12;
+      drawPeach(p);
+    }
+    if(!reduceMotion) raf=requestAnimationFrame(draw);
+  }
+  function hit(e) {
+    const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+    let best=null,dist=Infinity;
+    for(const p of fruit) { const d=Math.hypot(p.x-x,p.y-y);if(d<p.size*1.7&&d<dist){best=p;dist=d;} }
+    if(best){best.bounce=reduceMotion?0:22;best.vy=-2;draw(performance.now());}
+  }
+  canvas.addEventListener('pointerdown',hit);
+  canvas.addEventListener('pointermove',e=>{
+    if(e.pointerType==='mouse' && (e.buttons===0)) {
+      const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+      for(const p of fruit) if(Math.hypot(p.x-x,p.y-y)<p.size*1.2 && p.bounce<2){p.bounce=12;draw(performance.now());break;}
+    }
+  });
+  window.addEventListener('resize',resize);
+  resize();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# Copy this file to terraform.tfvars, then replace the SSH key with your real public key.
+# Never put your Linode API token in this file; export LINODE_TOKEN in your shell instead.
+region          = "ap-south"
+instance_type    = "g6-nanode-1"
+instance_label   = "peach-shop-web"
+root_password = "Password@123!@#$"
