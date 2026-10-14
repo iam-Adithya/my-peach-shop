@@ -12,7 +12,7 @@ This project creates one Linode Ubuntu server, installs Nginx, and publishes the
 2. Create a Linode API token with permissions to create/manage Linodes. Set it in your terminal, not in source code:
 
    ```bash
-   export LINODE_TOKEN="your-linode-api-token" ----> 8bbbb473a6674235caa6df10e040c10f846ca8ef7a8e3f121223bfcc156ff9c9
+   export LINODE_TOKEN="your-linode-api-token"
    ```
 
 3. Make an SSH key if you don't have one already:
