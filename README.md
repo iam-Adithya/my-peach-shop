@@ -20,6 +20,7 @@ This project creates one Linode Ubuntu server, installs Nginx, and publishes the
    ```bash
    ssh-keygen -t ed25519 -C "peach-shop-linode"
    cat ~/.ssh/id_ed25519.pub
+   
    ```
 
 4. Copy `terraform.tfvars.example` to `terraform.tfvars` and replace `ssh_public_key` with the full output from `cat ~/.ssh/id_ed25519.pub`.
@@ -71,6 +72,8 @@ Review the plan and type `yes`. This deletes the Linode and its attached data. L
 
 ## Security notes
 
+- line 185-186 of Linode login.html has creds remove or add it before deploying to GitHub.
+- Linode blocks greater than 16kh of meta data try to deploy to GitHub and clone it inside the server.
 - Keep `LINODE_TOKEN`, your private SSH key, and `terraform.tfstate` private.
 - Never put a Supabase `service_role` or secret key in browser HTML. The page should contain only the publishable key.
 - A redirect to `index.html` does not by itself protect private content. Add a Supabase session check to the main page and secure private data with Supabase Row Level Security policies if the page is intended to be login-only.
